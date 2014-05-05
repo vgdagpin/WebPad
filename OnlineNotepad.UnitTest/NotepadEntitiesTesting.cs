@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OnlineNotepad.EF;
 
 namespace OnlineNotepad.UnitTest
 {
@@ -9,10 +8,10 @@ namespace OnlineNotepad.UnitTest
         [TestMethod]
         public void CanInitializeDatabase()
         {
-            using (NotepadEntities entities = new NotepadEntities())
-            {
-                entities.SaveChanges();
-            }
+            //using (NotepadEntities entities = new NotepadEntities())
+            //{
+            //    entities.SaveChanges();
+            //}
         }
     }
 }
