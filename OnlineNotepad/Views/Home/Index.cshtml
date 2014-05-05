@@ -17,12 +17,12 @@
                 theme: "ambiance",
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 extraKeys: {
-                    "Ctrl-S": function (instance)
+                    "Ctrl-S": function (editor)
                     {
                         // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
                         setTimeout(function ()
                         {
-                            SaveDocument();
+                            SaveDocument(editor);
                         }, 0);
                     }
                 }
@@ -30,7 +30,32 @@
         );
     });
 
-    function SaveDocument() {
-        
+    function SaveDocument(editor)
+    {
+        var data =
+        {
+            alias: "@Model.NotepadID",
+            content: editor.getValue()
+        };
+
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+            url: '@Url.Action("Save", "Home")',
+            type: 'Post',
+            data: jsonData,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result) {
+                if (result.Result == "Success")
+                {
+                    
+                }
+            },
+            error: function (err)
+            {
+                console.log(err);
+            }
+        });
     }
 </script>

@@ -35,12 +35,34 @@ namespace OnlineNotepad.Controllers
                         entities.SaveChanges();
 
                         Response.Redirect(tempAlias);
+
+                        return View();
                     }
 
                     ViewBag.Title = notepad.Title;
 
                     return View(notepad);
                 }
+            }
+
+            public JsonResult Save(Guid alias, string content)
+            {
+                using (NotepadEntities entities = new NotepadEntities())
+                {
+                    var q = from n in entities.Notepads
+                        where n.NotepadID == alias
+                        select n;
+
+                    var notepad = q.SingleOrDefault();
+
+                    if (notepad != null)
+                    {
+                        notepad.Content = content;
+                        entities.SaveChanges();
+                    }
+                }
+
+                return Json(new { Content = content, Result = "Success" });
             }
         }
 }

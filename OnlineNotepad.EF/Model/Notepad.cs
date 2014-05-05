@@ -20,6 +20,9 @@ namespace OnlineNotepad.EF.Model
         [Required, MaxLength(100)]
         public string Title { get; set; }
 
+        [Required, MaxLength(100)]
+        public string Theme { get; set; }
+
         public Guid? UserID { get; set; }
 
         public Notepad()
