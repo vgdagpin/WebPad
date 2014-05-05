@@ -27,7 +27,8 @@ namespace OnlineNotepad.Controllers
                         Notepad newNote = new Notepad
                         {
                             Title = "Untitled Notepad",
-                            Alias = tempAlias
+                            Alias = tempAlias,
+                            Theme = "ambiance"
                         };
 
                         entities.Notepads.Add(newNote);
