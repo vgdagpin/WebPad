@@ -2,6 +2,8 @@
 using OnlineNotepad.EF.Model;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Linq;
 
 namespace OnlineNotepad.EF
 {
@@ -18,10 +20,29 @@ namespace OnlineNotepad.EF
 
         public override int SaveChanges()
         {
-            foreach (var item in ChangeTracker.Entries<IAuditedEntity>())
-                item.Entity.CreatedOn = DateTime.Now;
+            try
+            {
+                foreach (var item in ChangeTracker.Entries<IAuditedEntity>())
+                    item.Entity.CreatedOn = DateTime.Now;
 
-            return base.SaveChanges();
+                return base.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errors = ex.EntityValidationErrors
+                    .Cast<DbEntityValidationResult>();
+
+                var xx = string.Empty;
+
+                throw;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
 
         public class DBInitializer : CreateDatabaseIfNotExists<NotepadEntities>
@@ -29,6 +50,7 @@ namespace OnlineNotepad.EF
             protected override void Seed(NotepadEntities context)
             {
                 context.Database.ExecuteSqlCommand("ALTER TABLE tbl_Users ADD CONSTRAINT UQ_Email UNIQUE (Email)");
+                context.Database.ExecuteSqlCommand("ALTER TABLE tbl_Notepads ADD CONSTRAINT UQ_Alias UNIQUE (Alias)");
             }
         }
     }

@@ -1,6 +1,36 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model  OnlineNotepad.EF.Model.Notepad
+
+@{
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-<h2>Index</h2>
+@Html.TextAreaFor(m => m.Content, new { id = "txtContent" })
+
+<script>
+    $("document").ready(function() {
+        CodeMirror.fromTextArea(document.getElementById("txtContent"), {
+                mode: "text/x-csharp",
+                lineNumbers: true,
+                lineWrapping: true,
+                foldGutter: true,
+                fullScreen: true,
+                theme: "ambiance",
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                extraKeys: {
+                    "Ctrl-S": function (instance)
+                    {
+                        // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
+                        setTimeout(function ()
+                        {
+                            SaveDocument();
+                        }, 0);
+                    }
+                }
+            }
+        );
+    });
+
+    function SaveDocument() {
+        
+    }
+</script>

@@ -14,6 +14,9 @@ namespace OnlineNotepad.EF.Model
 
         public string Content { get; set; }
 
+        [Required, MaxLength(255)]
+        public string Alias { get; set; }
+
         [Required, MaxLength(100)]
         public string Title { get; set; }
 
