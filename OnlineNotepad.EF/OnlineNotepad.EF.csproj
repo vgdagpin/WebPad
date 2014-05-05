@@ -52,6 +52,7 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="NotepadEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -9,6 +9,8 @@ namespace OnlineNotepad.EF.Model
     [Table("tbl_Notepads")]
     public class Notepad : IAuditedEntity
     {
+        private string lockPassword;
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid NotepadID { get; set; }
 
@@ -22,6 +24,21 @@ namespace OnlineNotepad.EF.Model
 
         [Required, MaxLength(100)]
         public string Theme { get; set; }
+
+        [Required]
+        public bool ReadOnly { get; set; }
+
+        [Required]
+        public bool ShowContent { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
+
+        [MaxLength(255)]
+        public string LockPassword
+        {
+            get { return lockPassword; }
+            set { lockPassword = Utility.GetMd5Hash(value); }
+        }
 
         public Guid? UserID { get; set; }
 

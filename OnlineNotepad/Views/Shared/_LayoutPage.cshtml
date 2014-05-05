@@ -3,18 +3,22 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" href="@Url.Content("~/Content/images/notepad.ico")" />
+
     <title>@ViewBag.Title</title>
     
     <script src="@Url.Content("~/Content/jquery/jquery-2.1.0.min.js")"></script>
+    <script src="@Url.Content("~/Content/jqueryui/js/jquery-ui-1.10.4.custom.min.js")"></script>
+    <link href="@Url.Content("~/Content/jqueryui/css/jqueryui-neon/jquery-ui-1.10.4.custom.min.css")" rel="stylesheet" />
 
     <script src="@Url.Content("~/Content/codemirror/lib/codemirror.js")"></script>
     
     <link href="@Url.Content("~/Content/codemirror/lib/codemirror.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/codemirror/addon/fold/foldgutter.css")" rel="stylesheet" />
     
-    <link href="~/Content/codemirror/theme/ambiance.css" rel="stylesheet" />
-    <link href="~/Content/codemirror/addon/display/fullscreen.css" rel="stylesheet" />
-    <script src="~/Content/codemirror/addon/display/fullscreen.js"></script>
+    <link href="@Url.Content("~/Content/codemirror/theme/ambiance.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/codemirror/addon/display/fullscreen.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/codemirror/addon/display/fullscreen.js")"></script>
     <script src="@Url.Content("~/Content/codemirror/addon/fold/brace-fold.js")"></script>
     <script src="@Url.Content("~/Content/codemirror/addon/fold/comment-fold.js")"></script>
     <script src="@Url.Content("~/Content/codemirror/addon/fold/foldcode.js")"></script>
@@ -22,7 +26,7 @@
     <script src="@Url.Content("~/Content/codemirror/addon/fold/indent-fold.js")"></script>
     <script src="@Url.Content("~/Content/codemirror/addon/fold/markdown-fold.js")"></script>
     <script src="@Url.Content("~/Content/codemirror/addon/fold/xml-fold.js")"></script>
-    <script src="~/Content/codemirror/keymap/sublime.js"></script>
+    <script src="@Url.Content("~/Content/codemirror/keymap/sublime.js")"></script>
 
     <script src="@Url.Content("~/Content/codemirror/mode/clike/clike.js")"></script>
     
@@ -30,10 +34,8 @@
         body {
             margin: 0;
             padding: 0;
-        }
-
-        .CodeMirror {
-
+            font-family: Segoe UI,Helvetica,Arial,sans-serif;
+	        font-size: 11px;
         }
     </style>
 </head>
