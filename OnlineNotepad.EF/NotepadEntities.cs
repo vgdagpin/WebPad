@@ -45,7 +45,7 @@ namespace OnlineNotepad.EF
             
         }
 
-        public class DBInitializer : CreateDatabaseIfNotExists<NotepadEntities>
+        public class DBInitializer : DropCreateDatabaseAlways<NotepadEntities>
         {
             protected override void Seed(NotepadEntities context)
             {

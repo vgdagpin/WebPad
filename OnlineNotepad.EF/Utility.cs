@@ -9,6 +9,11 @@ namespace OnlineNotepad.EF
         {
             string retVal = string.Empty;
 
+            if (string.IsNullOrEmpty(input))
+            {
+                return null;
+            }
+
             using (MD5 md5Hasher = MD5.Create())
             {
                 byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
