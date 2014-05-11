@@ -43,7 +43,7 @@
                 </select>
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="vertical-align: top;">Attributes:</td>
             <td>
                 <input type="checkbox" id="cboxReadOnly" /><label for="cboxReadOnly">Read Only</label> <br />
@@ -51,6 +51,10 @@
             </td>
         </tr>
     </table>
+    
+    <br />
+    
+    <p>To show this dialog again, press CTRL + ALT + S</p>
 </div>
 
 <script>
@@ -112,7 +116,7 @@
     function SaveDocumentWithConfig(editor) {
         $('#saveDialog').dialog({
             resizable: false,
-            height: 350,
+            height: 250,
             width:350,
             modal: true,
             buttons: {
