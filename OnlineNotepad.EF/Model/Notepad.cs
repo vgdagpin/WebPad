@@ -12,6 +12,7 @@ namespace OnlineNotepad.EF.Model
         private string lockPassword;
         private string mime;
         private string theme;
+        private string title;
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid NotepadID { get; set; }
@@ -22,7 +23,11 @@ namespace OnlineNotepad.EF.Model
         public string Alias { get; set; }
 
         [Required, MaxLength(100)]
-        public string Title { get; set; }
+        public string Title
+        {
+            get { return string.IsNullOrEmpty(title) ? "Untitled Notepad" : title; }
+            set { title = string.IsNullOrEmpty(value) ? "Untitled Notepad" : value; }
+        }
 
         [Required]
         public bool ShowContent { get; set; }
@@ -40,14 +45,14 @@ namespace OnlineNotepad.EF.Model
         public string Mime
         {
             get { return string.IsNullOrEmpty(mime) ? "text/plain" : mime; }
-            set { mime = value; }
+            set { mime = string.IsNullOrEmpty(value) ? "text/plain" : value; }
         }
 
         [Required, MaxLength(100)]
         public string Theme
         {
             get { return string.IsNullOrEmpty(theme) ? "ambiance" : theme; }
-            set { theme = value; }
+            set { theme =  string.IsNullOrEmpty(value) ? "ambiance" : value; }
         }
 
         public Guid? UserID { get; set; }

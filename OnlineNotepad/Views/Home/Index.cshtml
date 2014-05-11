@@ -1,16 +1,23 @@
-﻿@model  OnlineNotepad.EF.Model.Notepad
+﻿@using OnlineNotepad.Controllers
+@model  OnlineNotepad.EF.Model.Notepad
 
 @{
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-@Html.TextAreaFor(m => m.Content, new { id = "txtContent" })
+<style>
+    .modalTable {
+        
+    }
+</style>
+
+@Html.TextAreaFor(m => m.Content, new { id = "txtContent", placeholder = HomeController.GetPlaceHolder() })
 <div id="saveDialog" title="Save WebPad" style="display: none;">
-    <table style="width: 100%;">
+    <table class="modalTable" style="width: 100%;">
         <tr>
             <td style="width: 25%;vertical-align: top;">Title:</td>
             <td style="width: 75%;">
-                @Html.TextBoxFor(m => m.Title, new { style = "width:98%;" })
+                @Html.TextBoxFor(m => m.Title, new { style = "width:98%;", id = "txtNotepadTitle" })
             </td>
         </tr>
         <tr>
@@ -29,7 +36,8 @@
 
                         foreach (var fileInfo in themeFiles)
                         {
-                            <option value="@fileInfo.Name">@Path.GetFileNameWithoutExtension(fileInfo.Name)</option>
+                            var name = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                            <option value="@name">@name</option>
                         }
                     }
                 </select>
@@ -46,21 +54,34 @@
 </div>
 
 <script>
-    $("document").ready(function ()
-    {
+    var _isModified = '@Model.ModifiedOn.HasValue' == 'True';
+    var _mime = '@Model.Mime';
+    var _theme = '@Model.Theme';
+    var _notepadID = '@Model.NotepadID';
+    var _createdOn = '@Model.CreatedOn';
+    var _title = '@Model.Title';
+    var _cm;
+
+    $("document").ready(function () {
+        
+
         for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
             var mode = CodeMirror.modeInfo[i];
 
-            $('#cmbMode').append('<option value="">' + mode.name +'</option>');
+            $('#cmbMode').append('<option value="' + mode.mime + '">' + mode.name + '</option>');
         }
 
-        CodeMirror.fromTextArea(document.getElementById("txtContent"), {
-                mode: "text/x-csharp",
+        $('#cmbMode').val(_mime);
+        $('#cmbTheme').val(_theme);
+
+            _cm = CodeMirror.fromTextArea(document.getElementById("txtContent"), {
+                mode: _mime,
                 lineNumbers: true,
                 lineWrapping: true,
                 foldGutter: true,
                 fullScreen: true,
-                theme: "ambiance",
+                autofocus: true,
+                theme: _theme,
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 extraKeys: {
                     "Ctrl-S": function (editor)
@@ -68,7 +89,13 @@
                         // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
                         setTimeout(function ()
                         {
-                            SaveDocument(editor);
+                            if (_isModified)
+                            {
+                                SaveDocument(editor);
+                            } else {
+                                SaveDocumentWithConfig(editor);
+                            }
+                            
                         }, 0);
                     },
                     "Ctrl-Alt-S": function(editor) {
@@ -85,12 +112,44 @@
     function SaveDocumentWithConfig(editor) {
         $('#saveDialog').dialog({
             resizable: false,
-            height: 250,
+            height: 350,
+            width:350,
             modal: true,
             buttons: {
-                "Save": function ()
-                {
-                    $(this).dialog("close");
+                "Save": function () {
+                    var data =
+                    {
+                        notepad: {
+                            Content: editor.getValue(),
+                            NotepadID: _notepadID,
+                            Title: $('#txtNotepadTitle').val().trim(),
+                            Mime: $('#cmbMode').val(),
+                            Theme: $('#cmbTheme').val(),
+                            CreatedOn: _createdOn
+                        }
+                    };
+
+                    var jsonData = JSON.stringify(data);
+
+                    $.ajax({
+                        url: '@Url.Action("SaveWithConfig", "Home")',
+                        type: 'Post',
+                        data: jsonData,
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function(response) {
+                            _isModified = true;
+
+                            _cm.setOption('theme', $('#cmbTheme').val());
+                            _cm.setOption('mode', $('#cmbMode').val());
+                            document.title = $('#txtNotepadTitle').val().trim();
+
+                            $('#saveDialog').dialog('close');
+                        },
+                        error: function(err) {
+                            alert(err.Message);
+                        }
+                    });
                 },
                 Cancel: function ()
                 {
@@ -100,11 +159,13 @@
         });
     }
 
-    function SaveDocument(editor)
-    {
+    function SaveDocument(editor) {
+        ShowOverlay();
+        
+
         var data =
         {
-            alias: "@Model.NotepadID",
+            alias: _notepadID,
             content: editor.getValue()
         };
 
@@ -117,9 +178,8 @@
             contentType: 'application/json',
             dataType: 'json',
             success: function (result) {
-                if (result.Result == "Success")
-                {
-                    
+                if (result.Result == "Success") {
+                    HideOverlay();
                 }
             },
             error: function (err)
@@ -127,5 +187,18 @@
                 console.log(err);
             }
         });
+    }
+
+    function ShowOverlay()
+    {
+        _cm.setOption('readOnly', true);
+        var overlay = $('<div id="screenLocker" class="ui-widget-overlay ui-front"></div>');
+        $('body').append(overlay);
+    }
+
+    function HideOverlay()
+    { 
+        _cm.setOption('readOnly', false);
+        $('#screenLocker').remove();
     }
 </script>

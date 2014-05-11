@@ -4,6 +4,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Text;
 
 namespace OnlineNotepad.EF
 {
@@ -29,20 +30,18 @@ namespace OnlineNotepad.EF
             }
             catch (DbEntityValidationException ex)
             {
-                var errors = ex.EntityValidationErrors
-                    .Cast<DbEntityValidationResult>();
+                StringBuilder sb = new StringBuilder();
+                
+                ex.EntityValidationErrors.First()
+                    .ValidationErrors
+                    .ToList()
+                    .ForEach(e =>
+                    {
+                        sb.AppendLine(e.PropertyName + ": " + e.ErrorMessage);
+                    });
 
-                var xx = string.Empty;
-
-                throw;
-
+                throw new Exception(sb.ToString());
             }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-            
         }
 
         public class DBInitializer : CreateDatabaseIfNotExists<NotepadEntities>
