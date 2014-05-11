@@ -10,29 +10,19 @@ namespace OnlineNotepad.EF.Model
     public class Notepad : IAuditedEntity
     {
         private string lockPassword;
-        private string extension;
-        private string content;
+        private string mime;
+        private string theme;
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid NotepadID { get; set; }
 
-        public string Content
-        {
-            get { return content; }
-            set { content = value; }
-        }
+        public string Content { get; set; }
 
         [Required, MaxLength(255)]
         public string Alias { get; set; }
 
         [Required, MaxLength(100)]
         public string Title { get; set; }
-
-        [Required, MaxLength(100)]
-        public string Theme { get; set; }
-
-        [Required]
-        public bool ReadOnly { get; set; }
 
         [Required]
         public bool ShowContent { get; set; }
@@ -47,10 +37,17 @@ namespace OnlineNotepad.EF.Model
         }
 
         [Required, MaxLength(10)]
-        public string Extention
+        public string Mime
         {
-            get { return string.IsNullOrEmpty(extension) ? "txt" : extension; ; }
-            set { extension = value; }
+            get { return string.IsNullOrEmpty(mime) ? "text/plain" : mime; }
+            set { mime = value; }
+        }
+
+        [Required, MaxLength(100)]
+        public string Theme
+        {
+            get { return string.IsNullOrEmpty(theme) ? "ambiance" : theme; }
+            set { theme = value; }
         }
 
         public Guid? UserID { get; set; }
@@ -59,6 +56,7 @@ namespace OnlineNotepad.EF.Model
         {
             NotepadRevisions = new HashSet<NotepadRevision>();
         }
+
         public ICollection<NotepadRevision> NotepadRevisions { get; set; }
 
         public DateTime CreatedOn { get; set; }
