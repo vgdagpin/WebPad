@@ -93,6 +93,11 @@
                         // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
                         setTimeout(function ()
                         {
+                            if (editor.getValue().trim() === '')
+                            {
+                                return;
+                            }
+
                             if (_isModified)
                             {
                                 SaveDocument(editor);
@@ -105,6 +110,11 @@
                     "Ctrl-Alt-S": function(editor) {
                         setTimeout(function ()
                         {
+                            if (editor.getValue().trim() === '')
+                            {
+                                return;
+                            }
+
                             SaveDocumentWithConfig(editor);
                         }, 0);
                     }
