@@ -13,7 +13,7 @@ namespace OnlineNotepad.EF
         public DbSet<Notepad> Notepads { get; set; }
 
         public NotepadEntities()
-            : base("name=SQLSERVER_CONNECTION_STRING")
+            : base("name=NotepadConnection")
         {
             Database.SetInitializer(new DBInitializer());
         }
