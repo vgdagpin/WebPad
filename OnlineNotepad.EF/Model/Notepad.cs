@@ -41,7 +41,7 @@ namespace OnlineNotepad.EF.Model
             set { lockPassword = Utility.GetMd5Hash(value); }
         }
 
-        [Required, MaxLength(10)]
+        [Required, MaxLength(100)]
         public string Mime
         {
             get { return string.IsNullOrEmpty(mime) ? "text/plain" : mime; }
