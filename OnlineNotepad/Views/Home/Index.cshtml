@@ -123,14 +123,18 @@
         );
     });
 
-    function SaveDocumentWithConfig(editor) {
+    function SaveDocumentWithConfig(editor)
+    {
         $('#saveDialog').dialog({
             resizable: false,
             height: 250,
             width:350,
             modal: true,
             buttons: {
-                "Save": function () {
+                "Save": function ()
+                {
+                    ShowOverlay();
+
                     var data =
                     {
                         notepad: {
@@ -159,8 +163,13 @@
                             document.title = $('#txtNotepadTitle').val().trim();
 
                             $('#saveDialog').dialog('close');
+
+                            HideOverlay();
                         },
-                        error: function(err) {
+                        error: function (err)
+                        {
+                            HideOverlay();
+
                             alert(err.Message);
                         }
                     });
@@ -206,7 +215,7 @@
     function ShowOverlay()
     {
         _cm.setOption('readOnly', true);
-        var overlay = $('<div id="screenLocker" class="ui-widget-overlay ui-front"></div>');
+        var overlay = $('<div id="screenLocker" style="z-index: 101;" class="ui-widget-overlay ui-front"></div>');
         $('body').append(overlay);
     }
 
