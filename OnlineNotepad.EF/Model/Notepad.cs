@@ -11,6 +11,7 @@ namespace OnlineNotepad.EF.Model
     {
         private string lockPassword;
         private string mime;
+        private string mode;
         private string theme;
         private string title;
 
@@ -46,6 +47,13 @@ namespace OnlineNotepad.EF.Model
         {
             get { return string.IsNullOrEmpty(mime) ? "text/plain" : mime; }
             set { mime = string.IsNullOrEmpty(value) ? "text/plain" : value; }
+        }
+
+        [Required, MaxLength(100)]
+        public string Mode
+        {
+            get { return string.IsNullOrEmpty(mode) ? "null" : mode; }
+            set { mode = string.IsNullOrEmpty(value) ? "null" : value; }
         }
 
         [Required, MaxLength(100)]

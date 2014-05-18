@@ -43,7 +43,7 @@
                 </select>
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="vertical-align: top;">Attributes:</td>
             <td>
                 <input type="checkbox" id="cboxReadOnly" /><label for="cboxReadOnly">Read Only</label> <br />
@@ -51,6 +51,10 @@
             </td>
         </tr>
     </table>
+    
+    <br />
+    
+    <p>To show this dialog again, press CTRL + ALT + S</p>
 </div>
 
 <script>
@@ -89,6 +93,11 @@
                         // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
                         setTimeout(function ()
                         {
+                            if (editor.getValue().trim() === '')
+                            {
+                                return;
+                            }
+
                             if (_isModified)
                             {
                                 SaveDocument(editor);
@@ -101,6 +110,11 @@
                     "Ctrl-Alt-S": function(editor) {
                         setTimeout(function ()
                         {
+                            if (editor.getValue().trim() === '')
+                            {
+                                return;
+                            }
+
                             SaveDocumentWithConfig(editor);
                         }, 0);
                     }
@@ -109,14 +123,18 @@
         );
     });
 
-    function SaveDocumentWithConfig(editor) {
+    function SaveDocumentWithConfig(editor)
+    {
         $('#saveDialog').dialog({
             resizable: false,
-            height: 350,
+            height: 250,
             width:350,
             modal: true,
             buttons: {
-                "Save": function () {
+                "Save": function ()
+                {
+                    ShowOverlay();
+
                     var data =
                     {
                         notepad: {
@@ -145,8 +163,13 @@
                             document.title = $('#txtNotepadTitle').val().trim();
 
                             $('#saveDialog').dialog('close');
+
+                            HideOverlay();
                         },
-                        error: function(err) {
+                        error: function (err)
+                        {
+                            HideOverlay();
+
                             alert(err.Message);
                         }
                     });
@@ -192,7 +215,7 @@
     function ShowOverlay()
     {
         _cm.setOption('readOnly', true);
-        var overlay = $('<div id="screenLocker" class="ui-widget-overlay ui-front"></div>');
+        var overlay = $('<div id="screenLocker" style="z-index: 101;" class="ui-widget-overlay ui-front"></div>');
         $('body').append(overlay);
     }
 

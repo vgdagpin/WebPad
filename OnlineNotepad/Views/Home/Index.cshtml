@@ -5,6 +5,34 @@
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
+@{
+        DirectoryInfo dirScript = new DirectoryInfo(Server.MapPath(@"~\Content\codemirror\mode"));
+        var scriptFiles = dirScript.GetFiles();
+
+        foreach (var fileInfo in scriptFiles)
+        {
+            if (fileInfo.Name == Model.Mode + ".js")
+            {
+                <script src="~/Content/codemirror/mode/@fileInfo.Name" type="text/javascript"></script>
+                break;
+            }
+        }
+    }
+    
+    @{
+        DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath(@"~\Content\codemirror\theme"));
+        var files = dirInfo.GetFiles();
+
+        foreach (var fileInfo in files)
+        {
+            if (fileInfo.Name == Model.Theme + ".css")
+            {
+                <link href="~/Content/codemirror/theme/@fileInfo.Name" rel="stylesheet" />
+                break;
+            }
+        }
+    }
+
 <style>
     .modalTable {
         
@@ -86,13 +114,12 @@
                 fullScreen: true,
                 autofocus: true,
                 theme: _theme,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 extraKeys: {
                     "Ctrl-S": function (editor)
                     {
                         // http://stackoverflow.com/questions/14860759/cant-override-ctrls-in-firefox-using-jquery-hotkeys
-                        setTimeout(function ()
-                        {
+                        setTimeout(function () {
+
                             if (editor.getValue().trim() === '')
                             {
                                 return;
@@ -131,8 +158,9 @@
             width:350,
             modal: true,
             buttons: {
-                "Save": function ()
-                {
+                "Save": function () {
+                    var m = _.where(CodeMirror.modeInfo, { mime: $('#cmbMode').val() })[0];
+                    
                     ShowOverlay();
 
                     var data =
@@ -141,7 +169,8 @@
                             Content: editor.getValue(),
                             NotepadID: _notepadID,
                             Title: $('#txtNotepadTitle').val().trim(),
-                            Mime: $('#cmbMode').val(),
+                            Mime: m.mime,
+                            Mode: m.mode,
                             Theme: $('#cmbTheme').val(),
                             CreatedOn: _createdOn
                         }

@@ -96,6 +96,7 @@ namespace OnlineNotepad.Controllers
                     noteToUpdate.Content = notepad.Content;
                     noteToUpdate.LockPassword = notepad.LockPassword;
                     noteToUpdate.Mime = notepad.Mime;
+                    noteToUpdate.Mode = notepad.Mode;
                     noteToUpdate.ModifiedOn = DateTime.Now;
                     noteToUpdate.ShowContent = notepad.ShowContent;
                     noteToUpdate.Theme = notepad.Theme;

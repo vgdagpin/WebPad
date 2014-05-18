@@ -303,7 +303,9 @@
     <Content Include="Content\codemirror\theme\vibrant-ink.css" />
     <Content Include="Content\codemirror\theme\xq-dark.css" />
     <Content Include="Content\codemirror\theme\xq-light.css" />
+    <Content Include="Content\underscore\underscore-min.map" />
     <None Include="Content\jquery\jquery-2.1.0.intellisense.js" />
+    <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\images\notepad.ico" />
     <Content Include="Content\jqueryui\css\jqueryui-neon\images\animated-overlay.gif" />
     <Content Include="Content\jqueryui\css\jqueryui-neon\images\ui-bg_diagonals-small_50_262626_40x40.png" />
