@@ -6,7 +6,7 @@
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
-  if (!CodeMirror.modeURL) CodeMirror.modeURL = "../mode/%N/%N.js";
+  if (!CodeMirror.modeURL) CodeMirror.modeURL = "../Content/codemirror/mode/%N/%N.js";
 
   var loading = {};
   function splitCallback(cont, n) {

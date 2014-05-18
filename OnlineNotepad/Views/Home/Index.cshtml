@@ -5,32 +5,16 @@
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-@{
-        DirectoryInfo dirScript = new DirectoryInfo(Server.MapPath(@"~\Content\codemirror\mode"));
-        var scriptFiles = dirScript.GetFiles();
-
-        foreach (var fileInfo in scriptFiles)
-        {
-            if (fileInfo.Name == Model.Mode + ".js")
-            {
-                <script src="~/Content/codemirror/mode/@fileInfo.Name" type="text/javascript"></script>
-                break;
-            }
-        }
+    @if (Model.Mode != "null")
+    {
+        string modeJs = Model.Mode + ".js";
+        <script src="~/Content/codemirror/mode/@Model.Mode/@modeJs" type="text/javascript"></script>
     }
+
     
     @{
-        DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath(@"~\Content\codemirror\theme"));
-        var files = dirInfo.GetFiles();
-
-        foreach (var fileInfo in files)
-        {
-            if (fileInfo.Name == Model.Theme + ".css")
-            {
-                <link href="~/Content/codemirror/theme/@fileInfo.Name" rel="stylesheet" />
-                break;
-            }
-        }
+        string themeCss = Model.Theme + ".css";
+        <link href="~/Content/codemirror/theme/@themeCss" rel="stylesheet" />
     }
 
 <style>
@@ -192,6 +176,8 @@
                             document.title = $('#txtNotepadTitle').val().trim();
 
                             $('#saveDialog').dialog('close');
+
+                            CodeMirror.autoLoadMode(_cm, m.mode);
 
                             HideOverlay();
                         },
